@@ -14,10 +14,7 @@ import {
 export const getAllContacts = async (req, res) => {
   try {
     const data = await listContacts();
-    res.status(200).json({
-      msg: "success",
-      data,
-    });
+    res.json(data);
   } catch (error) {
     console.log(error);
   }
@@ -30,10 +27,7 @@ export const getOneContact = async (req, res, next) => {
     if (!data) {
       throw HttpError(404);
     }
-    res.status(200).json({
-      msg: "success",
-      data,
-    });
+    res.json(data);
   } catch (error) {
     next(error);
   }
@@ -46,10 +40,7 @@ export const deleteContact = async (req, res, next) => {
     if (!data) {
       throw HttpError(404);
     }
-    res.status(200).json({
-      msg: "succes",
-      data,
-    });
+    res.json(data);
   } catch (error) {
     next(error);
   }
@@ -62,10 +53,7 @@ export const createContact = async (req, res, next) => {
 
     const { name, email, phone } = req.body;
     const data = await addContact(name, email, phone);
-    res.status(201).json({
-      msg: "created",
-      data,
-    });
+    res.status(201).json(data);
   } catch (error) {
     next(error);
   }
@@ -73,16 +61,14 @@ export const createContact = async (req, res, next) => {
 
 export const updateContact = async (req, res, next) => {
   try {
+    if (Object.keys(req.body).length === 0)
+      throw HttpError(400, "Body must have at least one field");
     const { error } = updateContactSchema.validate(req.body);
     if (error) throw HttpError(400, error.message);
     const { id } = req.params;
     const data = await updateContactById(id, req.body);
     if (!data) throw HttpError(404);
-    console.log(data);
-    res.status(200).json({
-      msg: "updated",
-      data,
-    });
+    res.status(200).json(data);
   } catch (error) {
     next(error);
   }
