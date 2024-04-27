@@ -76,12 +76,12 @@ export const updateContact = async (req, res, next) => {
 
 export const updateStatusContact = async (req, res, next) => {
   try {
-    console.log(Object.keys(req.body));
     if (!Object.keys(req.body).includes("favorite")) throw HttpError(404);
     const { error } = updateContactStatusSchema.validate(req.body);
     if (error) throw HttpError(400, error.message);
     const { id } = req.params;
     const data = await updateContactById(id, req.body);
+    if (!data) throw HttpError(404);
     res.status(200).json(data);
   } catch (error) {
     next(error);
