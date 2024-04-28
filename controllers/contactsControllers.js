@@ -76,7 +76,8 @@ export const updateContact = async (req, res, next) => {
 
 export const updateStatusContact = async (req, res, next) => {
   try {
-    if (!Object.keys(req.body).includes("favorite")) throw HttpError(404);
+    if (!Object.keys(req.body).includes("favorite"))
+      throw HttpError(400, "No 'favorite' field");
     const { error } = updateContactStatusSchema.validate(req.body);
     if (error) throw HttpError(400, error.message);
     const { id } = req.params;
