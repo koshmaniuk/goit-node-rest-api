@@ -67,7 +67,7 @@ export const getCurrentUser = async (req, res) => {
 export const logoutUser = async (req, res, next) => {
   try {
     const { _id } = await req.user;
-    await updateUser({ _id }, { token: "null" });
+    await updateUser({ _id }, { token: "" });
     res.status(204).json();
   } catch (error) {
     next(error);

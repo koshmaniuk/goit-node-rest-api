@@ -8,10 +8,12 @@ export const protect = async (req, res, next) => {
     req.headers.authorization.split(" ")[1];
   try {
     const userId = checkToken(token);
-    if (!userId) throw new HttpError(401, "Not authorized");
+    if (!userId) throw HttpError(401, "Not authorized");
 
-    const currentUser = getUserById(userId);
-    if (!currentUser) throw new HttpError(401, "Not authorized");
+    const currentUser = await getUserById(userId);
+
+    if (!currentUser) throw HttpError(401, "Not authorized");
+    if (!currentUser.token) throw HttpError(401, "Not authorized");
     req.user = currentUser;
     next();
   } catch (error) {
