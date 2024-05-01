@@ -2,6 +2,10 @@ import { model, Schema } from "mongoose";
 
 const contactsSchema = new Schema(
   {
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
     name: {
       type: String,
       required: [true, "Set name for contact"],

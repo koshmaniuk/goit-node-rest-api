@@ -1,32 +1,35 @@
 import { Contact } from "../models/contactsModel.js";
 
-export async function listContacts(req, res) {
-  try {
-    const contactList = Contact.find();
-    return contactList;
-  } catch (error) {
-    console.log(error);
-  }
+export async function listContacts(owner) {
+  const contactList = Contact.find({ owner });
+  return contactList;
 }
 
-export async function getContactById(contactId) {
-  const contact = Contact.findById(contactId);
+export async function getContactById(contactId, ownerId) {
+  const contact = Contact.findOne({ _id: contactId, owner: ownerId });
   return contact;
 }
 
-export async function removeContact(contactId) {
-  const contactToRemove = Contact.findByIdAndDelete(contactId);
+export async function removeContact(contactId, ownerId) {
+  const contactToRemove = Contact.findOneAndDelete({
+    _id: contactId,
+    owner: ownerId,
+  });
   return contactToRemove;
 }
 
-export async function addContact(name, email, phone) {
-  const newContact = await Contact.create({ name, email, phone });
+export async function addContact(owner, name, email, phone) {
+  const newContact = await Contact.create({ name, email, phone, owner });
   return newContact;
 }
 
-export async function updateContactById(contactId, body) {
-  const contactToUpdate = Contact.findByIdAndUpdate(contactId, body, {
-    new: true,
-  });
+export async function updateContactById(contactId, body, ownerId) {
+  const contactToUpdate = Contact.findOneAndUpdate(
+    { _id: contactId, owner: ownerId },
+    body,
+    {
+      new: true,
+    }
+  );
   return contactToUpdate;
 }
