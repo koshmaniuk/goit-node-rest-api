@@ -37,7 +37,7 @@ const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {
-    cb(new HttpError(400, "Please upload images only"), false);
+    cb(HttpError(400, "File must be an image"), false);
   }
 };
 export const uploadAvatar = multer({
