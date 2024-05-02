@@ -3,7 +3,6 @@ import path from "path";
 import HttpError from "../helpers/HttpError.js";
 import { checkToken } from "../services/jwtServices.js";
 import { getUserById } from "../services/usersServices.js";
-import { nanoid } from "nanoid";
 
 export const protect = async (req, res, next) => {
   const token =

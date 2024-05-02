@@ -29,7 +29,7 @@ export async function getUserById(id) {
   return user;
 }
 
-export async function updateAvatarService(id, avatarURL) {
+export async function updateAvatarUrl(id, avatarURL) {
   await User.findByIdAndUpdate(id, avatarURL);
   return;
 }

@@ -12,7 +12,7 @@ import {
   checkUser,
   checkUserExists,
   login,
-  updateAvatarService,
+  updateAvatarUrl,
   updateUser,
 } from "../services/usersServices.js";
 
@@ -98,7 +98,7 @@ export const updateAvatar = async (req, res, next) => {
     const newAvatarPath = path.join("public", "avatars", filename);
     await fs.rename(avatarPath, newAvatarPath);
 
-    await updateAvatarService({ _id }, { avatarURL: `/avatars/${filename}` });
+    await updateAvatarUrl({ _id }, { avatarURL: `/avatars/${filename}` });
 
     res.status(200).json({ avatarURL: `/avatars/${filename}` });
   } catch (error) {
