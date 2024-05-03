@@ -1,8 +1,23 @@
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
+
 import { User } from "../models/usersModel.js";
 
-export async function addUser(email, password, avatarURL) {
-  const newUser = await User.create({ email, password, avatarURL });
+export async function addUser(email, password, avatarURL, verificationToken) {
+  const newUser = await User.create({
+    email,
+    password,
+    avatarURL,
+    verificationToken,
+  });
   return newUser;
+}
+
+export async function verifyEmail(filter) {
+  const update = { verify: true, verificationToken: null };
+  await User.findOneAndUpdate(filter, update);
+  return;
 }
 
 export async function checkUser(email) {
@@ -35,3 +50,24 @@ export async function updateAvatarUrl(id, avatarURL) {
 }
 
 export const checkUserExists = (filter) => User.exists(filter);
+
+export async function sendVerificationEmail(email, verificationToken) {
+  const emailTransport = nodemailer.createTransport({
+    host: process.env.UKRNET_HOST,
+    port: process.env.UKRNET_PORT,
+    secure: true,
+    auth: {
+      user: process.env.UKRNET_USER,
+      pass: process.env.UKRNET_PASS,
+    },
+  });
+
+  const emailConfig = {
+    from: process.env.UKRNET_USER,
+    to: email,
+    subject: "Verification email",
+    text: `Verification link: /users/verify/${verificationToken}`,
+  };
+
+  await emailTransport.sendMail(emailConfig);
+}
