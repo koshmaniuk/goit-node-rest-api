@@ -3,15 +3,17 @@ import {
   createUser,
   getCurrentUser,
   logoutUser,
+  updateAvatar,
   userLogin,
 } from "../controllers/usersControllers.js";
-import { protect } from "../middlewares/usersMiddlewares.js";
+import { protect, uploadAvatar } from "../middlewares/usersMiddlewares.js";
 
 const usersRouter = express.Router();
 
-usersRouter.post("/users/register", createUser);
-usersRouter.post("/users/login", userLogin);
-usersRouter.post("/users/logout", protect, logoutUser);
-usersRouter.get("/users/current", protect, getCurrentUser);
+usersRouter.post("/register", createUser);
+usersRouter.post("/login", userLogin);
+usersRouter.post("/logout", protect, logoutUser);
+usersRouter.get("/current", protect, getCurrentUser);
+usersRouter.patch("/avatars", protect, uploadAvatar, updateAvatar);
 
 export default usersRouter;

@@ -1,7 +1,7 @@
 import { User } from "../models/usersModel.js";
 
-export async function addUser(email, password) {
-  const newUser = await User.create({ email, password });
+export async function addUser(email, password, avatarURL) {
+  const newUser = await User.create({ email, password, avatarURL });
   return newUser;
 }
 
@@ -27,6 +27,11 @@ export async function updateUser(id, token) {
 export async function getUserById(id) {
   const user = User.findById(id);
   return user;
+}
+
+export async function updateAvatarUrl(id, avatarURL) {
+  await User.findByIdAndUpdate(id, avatarURL);
+  return;
 }
 
 export const checkUserExists = (filter) => User.exists(filter);
