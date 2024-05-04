@@ -83,8 +83,6 @@ export const userLogin = async (req, res, next) => {
     const userToCheck = await checkUser(email);
     if (!userToCheck) throw HttpError(401, "Email or password is wrong");
 
-    console.log(userToCheck);
-
     const isPasswordValid = await bcrypt.compare(
       password,
       userToCheck.password
@@ -145,6 +143,7 @@ export const reVerefication = async (req, res, next) => {
     const { email } = value;
 
     const user = await checkUser(email);
+    if (!user) throw HttpError(404, "User not found");
     const { verificationToken } = user;
     if (!verificationToken)
       throw HttpError(400, "Verification has already been passed");
